@@ -1,0 +1,5 @@
+Manifest-Version: 0.0.1
+Project-Name: lab1
+Source: src/main/rascal
+Require-Libraries: 
+    
