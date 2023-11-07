@@ -9,9 +9,9 @@ import String;
 import Volume;
 
 int main(int testArgument=0) {
-    int lines = mainVolume(|project://smallsql0.21_src|);
-    println("lines: <lines>");
-    return testArgument;
+    int lines = mainVolume(|project://smallsql0.21_src/test|);
+    // println("lines: <lines>");
+    return lines;
 }
 
 list[Declaration] getASTs(loc projectLocation) {
