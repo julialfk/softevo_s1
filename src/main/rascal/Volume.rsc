@@ -8,25 +8,21 @@ import Set;
 import String;
 import Read;
 
-int mainVolume(loc projectLocation){
-    list[loc] fileLocations = getFiles(projectLocation);
-    return countLinesProject(fileLocations);
-}
+// public int mainVolume(loc projectLocation){
+//     list[loc] fileLocations = getFiles(projectLocation);
+//     return countLinesProject(fileLocations);
+// }
 
 // Count total number of lines in a project
-public int countLinesProject(list[loc] fileLocations){
-    int lines = 0;
-    for (l <- fileLocations){
-        lines += countLinesFile(l);
-    }
-    return lines;
+public int countLinesProject(loc projectLocation){
+    return size(concat(getProjectLines(projectLocation)));
 }
 
 // Count total number of lines in a file
 public int countLinesFile(loc fileLocation){
     list[str] file = file2Array(fileLocation);
     file = deleteComments(file);
-    println("lines: <file>");
+    // println("lines: <file>");
     int lines = size(file);
 
     return lines;

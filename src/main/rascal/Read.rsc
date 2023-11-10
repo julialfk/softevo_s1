@@ -8,15 +8,25 @@ import Set;
 import String;
 
 // Create a list of all file locations in the project
-list[loc] getFiles(loc projectLocation) {
+public list[loc] getFiles(loc projectLocation) {
     M3 model = createM3FromMavenProject(projectLocation);
-    list[loc] fileLocs = [f | f <- files(model.containment), isCompilationUnit(f)];
-    return fileLocs;
+    list[loc] fileLocations = [f | f <- files(model.containment), isCompilationUnit(f)];
+    return fileLocations;
 }
 
 // Convert a file into an array
 public list[str] file2Array(loc file) {
     return readFileLines(file);
+}
+
+public list[list[str]] getProjectLines(loc projectLocation) {
+    list[loc] fileLocations = getFiles(projectLocation);
+    list[list[str]] files = [];
+    for (location <- fileLocations) {
+        files += [deleteComments(file2Array(location))];
+    }
+
+    return files;
 }
 
 // Delete the start and end of multiline comments from a line.
@@ -51,15 +61,16 @@ public tuple[bool, str] deleteMultiComments(bool inComment, str s) {
     return <inComment, newString>;
 }
 
-// Delete a single line comment from a line.
-// public str deleteSingleComment(str s) {
-//     list[str] stringSlices = [];
+// Delete an inline comment from a line.
+public str deleteInlineComment(str s) {
+    int indexStartComment = findFirst(s, "//");
 
-//     str newString = s;
+    if (indexStartComment != -1) {
+        return s[0..indexStartComment];
+    }
 
-
-//     return newString;
-// }
+    return s;
+}
 
 public list[str] deleteComments(list[str] file) {
     // Filter all single line comments without code before the comment and empty lines.
@@ -71,6 +82,10 @@ public list[str] deleteComments(list[str] file) {
     // bool inString = false;
 
     for (s <- file){
+        // println("in: <s>");
+        s = deleteInlineComment(s);
+        // println("out: <s>");
+
         bool hasCommentStart = contains(s, "/*");
         bool hasCommentEnd = contains(s, "*/");
         if (inComment && !hasCommentEnd) {
@@ -80,13 +95,15 @@ public list[str] deleteComments(list[str] file) {
         //     newFile = newFile + s;
         //     continue;
         // }
-        
+
         if (hasCommentEnd || hasCommentStart) {
-            println("in: <s>");
+            // println("in: <s>");
             <inComment, s> = deleteMultiComments(inComment, s);
-            println("out: <s>");
+            // println("out: <s>");
         }
-        newFile = newFile + s;
+
+
+        newFile += trim(s);
     }
     newFile = [s | str s <- newFile, /^\s*$/ !:= s];
 

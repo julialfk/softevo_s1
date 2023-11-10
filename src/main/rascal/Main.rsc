@@ -9,8 +9,8 @@ import String;
 import Volume;
 
 int main(int testArgument=0) {
-    int lines = mainVolume(|project://smallsql0.21_src/test|);
-    // println("lines: <lines>");
+    int lines = countLinesProject(|project://smallsql0.21_src/test|);
+    println("lines: <lines>");
     return lines;
 }
 
