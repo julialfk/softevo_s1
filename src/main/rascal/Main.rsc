@@ -7,11 +7,14 @@ import List;
 import Set;
 import String;
 import Volume;
+import Duplication;
 
-int main(int testArgument=0) {
+int main() {
     int lines = countLinesProject(|project://smallsql0.21_src/test|);
     println("lines: <lines>");
-    return lines;
+    real duplicates = countDuplicates(|project://smallsql0.21_src/test|, lines);
+    println("duplicate percentage: <duplicates * 100>");
+    return 0;
 }
 
 list[Declaration] getASTs(loc projectLocation) {

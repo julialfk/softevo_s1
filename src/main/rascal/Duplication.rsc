@@ -1,4 +1,4 @@
-module Volume
+module Duplication
 
 import IO;
 import lang::java::m3::Core;
@@ -8,26 +8,82 @@ import Set;
 import String;
 import Read;
 
-public map[list[str], int] countDuplicates(list[list[str]] files) {
+int GROUPSIZE = 6;
+
+public real countDuplicates(loc projectLocation, int totalLines) {
+    map[str k, int v] codeGroups = findDuplicates(getProjectLines(projectLocation));
+    int duplicateLines = 0;
+    for (group <- codeGroups) {
+        // println("group = <group>\n");
+        duplicateLines += codeGroups[group];
+    }
+    println("<duplicateLines> / <totalLines>");
+
+    return duplicateLines / (totalLines * 1.0);
+    // return 1.0;
+}
+
+/* Create a mapping of blocks of code and the number of lines corresponding
+   to that block.
+   
+   input:
+   files - the list of files that have been converted into lists of strings.
+   output:
+   a map containing all distinct code groups with a size of 6 lines as the key
+   and the number of duplicate lines found for that group.
+
+   This function goes through the files once. When scanning a file, it takes
+   the next 6 lines from the current index as a group. The group is added as a
+   key to the map if it has not been added before. If it is recognized as a
+   duplicated group, GROUPSIZE (6) will be added to the value of the group in
+   the map. After the current group has been recognized as a duplicate, the
+   inDuplicate state will be entered and the following lines will be checked
+   whether they are included in the 
+*/
+map[str, int] findDuplicates(list[list[str]] files) {
     // Key: group of 6 consecutive lines of code.
-    // Value: the location of found duplicate line that occurs in that group.
-    map[list[str], int] codeGroups = ();
+    // Value: the number of found duplicate lines that occurs in that group.
+    map[str, int] codeGroups = ();
     for (file <- files) {
-        int line = 0;
-        while (line <= size(file) - 5) {
-            group = file[line..line + 6];
+        bool inDuplicate = false;
+        for (line <- index(file)[0..-(GROUPSIZE-1)]) {
+            str group = concatGroup(file[line..line + GROUPSIZE]);
+
+            // If group is not a key yet, add it to the map.
             if (group notin codeGroups) {
-                codeGroups += group;
+                codeGroups[group] = 0;
+                inDuplicate = false;
+                continue;
             }
-            else {
-                codeGroups(group) += 6;
+            // Group is already in keys and this is the first group of a
+            // potential series of groups found in the map.
+            if (!inDuplicate) {
+                codeGroups[group] += GROUPSIZE;
+                inDuplicate = true;
+                continue;
             }
+            // Group is already in keys and the group before was also a
+            // duplicate group.
+            if (group in codeGroups) { codeGroups[group] += 1;}
         }
     }
 
     return codeGroups;
 }
 
-public tuple[map[list[str], int], int] countAdditionalLines(list[str] file, int line) {
-    
+str concatGroup(list[str] group) {
+    str s = "";
+    for (n <- index(group)) {
+        s += group[n];
+    }
+    return s;
 }
+
+// Should find location of original code in file and check whether if the next
+// line is identical to the given line.
+// bool checkSingleLine(list[str] file, int line, list[str] group, bool inDuplicate) {
+//     if (inDuplicate && file[line] notin group) {
+//         inDuplicate = false;
+//     }
+//     return inDuplicate;
+// }

@@ -13,12 +13,13 @@ import Read;
 //     return countLinesProject(fileLocations);
 // }
 
-// Count total number of lines in a project
+// Count total number of lines in a project.
+// Does count lines containing only brackets.
 public int countLinesProject(loc projectLocation){
     return size(concat(getProjectLines(projectLocation)));
 }
 
-// Count total number of lines in a file
+// Count total number of lines in a file.
 public int countLinesFile(loc fileLocation){
     list[str] file = file2Array(fileLocation);
     file = deleteComments(file);
