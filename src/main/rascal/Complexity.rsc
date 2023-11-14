@@ -35,7 +35,7 @@ str determineUnitCC(Statement source) {
         case \if(_,_,_): amount +=1;
         case \return(_): amount +=1;
         case \return(): amount +=1;
-        case \try(_,_,_): amount +=2;
+        case \try(_,_,_): amount +=1;
         case \try(_,_): amount +=1;
         case \catch(_,_): amount +=1;
         case \case(_): amount +=1;
@@ -78,7 +78,9 @@ str determineRank(map[str,int] CCperUnit) {
     real largerisk = (CCperUnit[large] / totalunits) * 100;
     real mediumrisk = (CCperUnit[medium] / totalunits) * 100;
     real lowrisk = (CCperUnit[small] / totalunits) * 100;
-
+    println(largerisk);
+    println(mediumrisk);
+    println(lowrisk);
     // high risk
     if (largerisk > 5 || mediumrisk > 15 || lowrisk > 50) {
         return "--";

@@ -1,6 +1,7 @@
 module Read
 
 import IO;
+import util::FileSystem;
 import lang::java::m3::Core;
 import lang::java::m3::AST;
 import List;
@@ -14,23 +15,18 @@ public list[loc] getFiles(loc projectLocation) {
     return fileLocations;
 }
 
-// Convert a file into an array
-public list[str] file2Array(loc file) {
-    return readFileLines(file);
-}
-
 public list[list[str]] getProjectLines(loc projectLocation) {
     list[loc] fileLocations = getFiles(projectLocation);
     list[list[str]] files = [];
     for (location <- fileLocations) {
-        files += [deleteComments(file2Array(location))];
+        files += [deleteComments(readFileLines(location))];
     }
 
     return files;
 }
 
 // Delete the start and end of multiline comments from a line.
-public tuple[bool, str] deleteMultiComments(bool inComment, str s) {
+tuple[bool, str] deleteMultiComments(bool inComment, str s) {
     int endLine = size(s);
     str newString = s;
     int indexStartComment = findFirst(s, "/*");
@@ -62,7 +58,7 @@ public tuple[bool, str] deleteMultiComments(bool inComment, str s) {
 }
 
 // Delete an inline comment from a line.
-public str deleteInlineComment(str s) {
+str deleteInlineComment(str s) {
     int indexStartComment = findFirst(s, "//");
 
     if (indexStartComment != -1) {
@@ -72,36 +68,24 @@ public str deleteInlineComment(str s) {
     return s;
 }
 
-public list[str] deleteComments(list[str] file) {
+list[str] deleteComments(list[str] file) {
     // Filter all single line comments without code before the comment and empty lines.
     // i.e. "// comment" gets filtered out, but "code // comment" is kept.
     file = [s | str s <- file, /^\s*\/\/.*/ !:= s, /^\s*$/ !:= s];
     int lastArray = size(file) - 1;
     list[str] newFile = [];
     bool inComment = false;
-    // bool inString = false;
 
     for (s <- file){
-        // println("in: <s>");
         s = deleteInlineComment(s);
-        // println("out: <s>");
 
         bool hasCommentStart = contains(s, "/*");
         bool hasCommentEnd = contains(s, "*/");
-        if (inComment && !hasCommentEnd) {
-            continue;
-        }
-        // if (inString) {
-        //     newFile = newFile + s;
-        //     continue;
-        // }
+        if (inComment && !hasCommentEnd) { continue; }
 
         if (hasCommentEnd || hasCommentStart) {
-            // println("in: <s>");
             <inComment, s> = deleteMultiComments(inComment, s);
-            // println("out: <s>");
         }
-
 
         newFile += trim(s);
     }
@@ -109,4 +93,3 @@ public list[str] deleteComments(list[str] file) {
 
     return newFile;
 }
-

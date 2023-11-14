@@ -53,6 +53,9 @@ str determinerank(int methods, map[str,int] categories) {
     real largerisk = (categories[large] / (methods * 1.0)) * 100;
     real mediumrisk = (categories[medium] / (methods * 1.0)) * 100;
     real lowrisk = (categories[small] / (methods * 1.0)) * 100;
+    println(largerisk);
+    println(mediumrisk);
+    println(lowrisk);
     // high risk
     if (largerisk > 5 || mediumrisk > 15 || lowrisk > 50) {
         return "--";

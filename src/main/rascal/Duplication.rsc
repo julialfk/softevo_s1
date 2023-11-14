@@ -10,17 +10,23 @@ import Read;
 
 int GROUPSIZE = 6;
 
-public real countDuplicates(loc projectLocation, int totalLines) {
+public str countDuplicates(loc projectLocation, int totalLines) {
     map[str k, int v] codeGroups = findDuplicates(getProjectLines(projectLocation));
     int duplicateLines = 0;
     for (group <- codeGroups) {
-        // println("group = <group>\n");
         duplicateLines += codeGroups[group];
     }
-    println("<duplicateLines> / <totalLines>");
 
-    return duplicateLines / (totalLines * 1.0);
-    // return 1.0;
+    real percentage = (duplicateLines / (totalLines * 1.0)) * 100;
+    println("<duplicateLines> / <totalLines>");
+    println("duplicate percentage: <percentage>");
+
+    if (percentage <= 3.0) { return "++"; }
+    if (percentage <= 5.0) { return "+"; }
+    if (percentage <= 10.0) { return "o"; }
+    if (percentage <= 20.0) { return "-"; }
+
+    return "--";
 }
 
 /* Create a mapping of blocks of code and the number of lines corresponding
@@ -48,6 +54,7 @@ map[str, int] findDuplicates(list[list[str]] files) {
         bool inDuplicate = false;
         for (line <- index(file)[0..-(GROUPSIZE-1)]) {
             str group = concatGroup(file[line..line + GROUPSIZE]);
+            int multiplier = 1;
 
             // If group is not a key yet, add it to the map.
             if (group notin codeGroups) {
@@ -55,16 +62,23 @@ map[str, int] findDuplicates(list[list[str]] files) {
                 inDuplicate = false;
                 continue;
             }
+
+            // Number of lines duplicated should be counted for both instances
+            // when the duplication for this block is caught for the first
+            // time.
+            if (codeGroups[group] == 0) { multiplier = 2; }
+            else { multiplier = 1; }
+
             // Group is already in keys and this is the first group of a
             // potential series of groups found in the map.
             if (!inDuplicate) {
-                codeGroups[group] += GROUPSIZE;
+                codeGroups[group] += GROUPSIZE * multiplier;
                 inDuplicate = true;
                 continue;
             }
             // Group is already in keys and the group before was also a
             // duplicate group.
-            if (group in codeGroups) { codeGroups[group] += 1;}
+            codeGroups[group] += 1 * multiplier;
         }
     }
 
@@ -78,12 +92,3 @@ str concatGroup(list[str] group) {
     }
     return s;
 }
-
-// Should find location of original code in file and check whether if the next
-// line is identical to the given line.
-// bool checkSingleLine(list[str] file, int line, list[str] group, bool inDuplicate) {
-//     if (inDuplicate && file[line] notin group) {
-//         inDuplicate = false;
-//     }
-//     return inDuplicate;
-// }
