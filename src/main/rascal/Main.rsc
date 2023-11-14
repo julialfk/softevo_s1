@@ -9,10 +9,10 @@ import String;
 import Volume;
 import Duplication;
 
-int main() {
-    int lines = countLinesProject(|project://smallsql0.21_src/test|);
+int main(loc projectLocation) {
+    int lines = countLinesProject(projectLocation);
     println("lines: <lines>");
-    real duplicates = countDuplicates(|project://smallsql0.21_src/test|, lines);
+    real duplicates = countDuplicates(projectLocation, lines);
     println("duplicate percentage: <duplicates * 100>");
     return 0;
 }
