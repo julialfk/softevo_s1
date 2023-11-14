@@ -6,21 +6,24 @@ import lang::java::m3::AST;
 import List;
 import Set;
 import String;
+import Read;
 import Volume;
 import Duplication;
-import UnitSize;
-import Complexity;
+import ComplexityUnits;
 
-// projectLocation |project://smallsql0.21_src|
+// projectLocation main(|project://smallsql0.21_src|)
 int main(loc projectLocation) {
-    int lines = countLinesProject(projectLocation);
+    list[loc] fileLocations = getFiles(projectLocation);
+    list[list[str]] projectLines = getProjectLines(projectLocation);
+    int lines = countLinesProject(projectLines);
     println("lines: <lines>");
-    real duplicates = countDuplicates(projectLocation, lines);
+    real duplicates = countDuplicates(projectLines, lines);
     println("duplicate percentage: <duplicates * 100>");
-    str UnitSize = mainUnitSize(projectLocation);
-    println("UnitSize: <UnitSize>");
-    str complexity = mainComplexity(projectLocation);
-    println("complexity: <complexity>");
+    // str UnitSize = mainUnitSize(fileLocations, lines);
+    // println("UnitSize: <UnitSize>");
+    tuple[str CC, str US] CCUS = mainComplexity(fileLocations, lines);
+    println("complexity: <CCUS.CC>");
+    println("unitsize: <CCUS.US>");
     return lines;
 }
 

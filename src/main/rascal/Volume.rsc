@@ -15,8 +15,8 @@ import Read;
 
 // Count total number of lines in a project.
 // Does count lines containing only brackets.
-public int countLinesProject(loc projectLocation){
-    return size(concat(getProjectLines(projectLocation)));
+public int countLinesProject(list[list[str]] projectLines){
+    return size(concat(projectLines));
 }
 
 // Count total number of lines in a file.
