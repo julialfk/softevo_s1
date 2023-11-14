@@ -8,13 +8,20 @@ import Set;
 import String;
 import Volume;
 import Duplication;
+import UnitSize;
+import Complexity;
 
+// projectLocation |project://smallsql0.21_src|
 int main(loc projectLocation) {
     int lines = countLinesProject(projectLocation);
     println("lines: <lines>");
     real duplicates = countDuplicates(projectLocation, lines);
     println("duplicate percentage: <duplicates * 100>");
-    return 0;
+    str UnitSize = mainUnitSize(projectLocation);
+    println("UnitSize: <UnitSize>");
+    str complexity = mainComplexity(projectLocation);
+    println("complexity: <complexity>");
+    return lines;
 }
 
 list[Declaration] getASTs(loc projectLocation) {

@@ -23,7 +23,6 @@ str mainUnitSize(loc projectLocation){
     for (file <- fileLocations) {
         Declaration ast = createAstFromFile(file, true);
         visit(ast) {
-            // \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl)
             case a:\method(_,_,_,_,_): {totalmethods += 1; risk = determinecategories(a.src); categories[risk] = categories[risk] + 1;}
         }
     }
@@ -51,9 +50,9 @@ str determinecategories(loc source) {
 //   -  |  50%  | 15%  |  5%
 //  --  |  -    |  -   |  -
 str determinerank(int methods, map[str,int] categories) {
-    int largerisk = categories[large] / methods;
-    int mediumrisk = categories[medium] / methods;
-    int lowrisk = categories[small] / methods;
+    real largerisk = (categories[large] / (methods * 1.0)) * 100;
+    real mediumrisk = (categories[medium] / (methods * 1.0)) * 100;
+    real lowrisk = (categories[small] / (methods * 1.0)) * 100;
     // high risk
     if (largerisk > 5 || mediumrisk > 15 || lowrisk > 50) {
         return "--";
