@@ -12,6 +12,12 @@ import Duplication;
 import ComplexityUnits;
 
 // projectLocation main(|project://smallsql0.21_src|)
+
+int overMain() {
+    main(|project://smallsql0.21_src|);
+    main(|project://hsqldb-2.3.1/|);
+    return 0;
+}
 int main(loc projectLocation) {
     list[loc] fileLocations = getFiles(projectLocation);
     list[list[str]] projectLines = getProjectLines(projectLocation);
