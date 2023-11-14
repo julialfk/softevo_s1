@@ -10,8 +10,8 @@ import Read;
 
 int GROUPSIZE = 6;
 
-public str countDuplicates(loc projectLocation, int totalLines) {
-    map[str k, int v] codeGroups = findDuplicates(getProjectLines(projectLocation));
+public real countDuplicates(list[list[str]] projectLines, int totalLines) {
+    map[str k, int v] codeGroups = findDuplicates(projectLines);
     int duplicateLines = 0;
     for (group <- codeGroups) {
         duplicateLines += codeGroups[group];
@@ -31,7 +31,7 @@ public str countDuplicates(loc projectLocation, int totalLines) {
 
 /* Create a mapping of blocks of code and the number of lines corresponding
    to that block.
-   
+
    input:
    files - the list of files that have been converted into lists of strings.
    output:
@@ -44,7 +44,7 @@ public str countDuplicates(loc projectLocation, int totalLines) {
    duplicated group, GROUPSIZE (6) will be added to the value of the group in
    the map. After the current group has been recognized as a duplicate, the
    inDuplicate state will be entered and the following lines will be checked
-   whether they are included in the 
+   whether they are included in the
 */
 map[str, int] findDuplicates(list[list[str]] files) {
     // Key: group of 6 consecutive lines of code.

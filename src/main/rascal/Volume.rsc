@@ -10,8 +10,8 @@ import Read;
 
 // Count total number of lines in a project.
 // Does count lines containing only brackets.
-public tuple[str, int] countLinesProject(loc projectLocation){
-    int lines = size(concat(getProjectLines(projectLocation)));
+public tuple[str, int] countLinesProject(list[list[str]] projectLines){
+    int lines = size(concat(projectLines));
 
     if (lines <= 66000) { return <"++", lines>; }
     if (lines <= 246000) { return <"+", lines>; }
