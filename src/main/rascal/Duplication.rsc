@@ -10,7 +10,7 @@ import Read;
 
 int GROUPSIZE = 6;
 
-public real countDuplicates(list[list[str]] projectLines, int totalLines) {
+public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     map[str k, int v] codeGroups = findDuplicates(projectLines);
     int duplicateLines = 0;
     for (group <- codeGroups) {
