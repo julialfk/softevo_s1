@@ -38,7 +38,7 @@ tuple[str CC, str US] mainComplexity(list[loc] fileLocations, int totalLines){
     // UnitSize stats
     println("US: <USperUnit>");
     println("US: <(USperUnit[large] + USperUnit[medium] + USperUnit[small] + USperUnit[none])>");
-    return <determineRank(CCperUnit), determineRank(CCperUnit)>;
+    return <determineRank(CCperUnit), determineRank(USperUnit)>;
 }
 
 str determineUnitCC(Statement impl) {
@@ -50,11 +50,20 @@ str determineUnitCC(Statement impl) {
         case \try(_,_,_): amount +=2;
         case \try(_,_): amount +=1;
         case \catch(_,_): amount +=1;
-        case \switch(_,_): amount +=1;
+        case \case(_): amount +=1;
+        case \conditional(_,_,_): amount +=1;
+        // branching statements
+        case \break(): amount +=1;
+        case \break(_): amount +=1;
+        case \continue(): amount +=1;
+        case \continue(_): amount +=1;
+        case \return(): amount +=1;
+        case \return(_): amount +=1;
         // loops
         case \for(_,_,_,_): amount +=1;
         case \for(_,_,_): amount +=1;
         case \foreach(_,_,_): amount +=1;
+        case \do(_,_): amount +=1;
         case \while(_,_): amount +=1;
         // infix
         case \infix(_,"&&",_): amount +=1;
