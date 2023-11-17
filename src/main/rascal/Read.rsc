@@ -87,9 +87,7 @@ list[str] deleteComments(list[str] file) {
             <inComment, s> = deleteMultiComments(inComment, s);
         }
 
-        newFile += trim(s);
+        if (/^\s*$/ !:= s) {newFile += trim(s);}
     }
-    newFile = [s | str s <- newFile, /^\s*$/ !:= s];
-
     return newFile;
 }
