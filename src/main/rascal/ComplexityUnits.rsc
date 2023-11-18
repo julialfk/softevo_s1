@@ -32,12 +32,13 @@ tuple[str CC, str US] mainComplexity(list[loc] fileLocations, int totalLines){
                                             USperUnit[determinecategories(a.src)] += percentage;}
         }
     }
-    // Cyclomatic Complexity stats
-    println("CC: <CCperUnit>");
-    println("CC: <(CCperUnit[large] + CCperUnit[medium] + CCperUnit[small] + CCperUnit[none])>");
-    // UnitSize stats
-    println("US: <USperUnit>");
-    println("US: <(USperUnit[large] + USperUnit[medium] + USperUnit[small] + USperUnit[none])>");
+    // debug
+    // // Cyclomatic Complexity stats
+    // println("CC: <CCperUnit>");
+    // println("CC: <(CCperUnit[large] + CCperUnit[medium] + CCperUnit[small] + CCperUnit[none])>");
+    // // UnitSize stats
+    // println("US: <USperUnit>");
+    // println("US: <(USperUnit[large] + USperUnit[medium] + USperUnit[small] + USperUnit[none])>");
     return <determineRank(CCperUnit), determineRank(USperUnit)>;
 }
 

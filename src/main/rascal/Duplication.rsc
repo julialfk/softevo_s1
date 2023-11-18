@@ -18,8 +18,9 @@ public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     }
 
     real percentage = (duplicateLines / (totalLines * 1.0)) * 100;
-    println("<duplicateLines> / <totalLines>");
-    println("duplicate percentage: <percentage>");
+    // debug
+    // println("<duplicateLines> / <totalLines>");
+    // println("duplicate percentage: <percentage>");
 
     if (percentage <= 3.0) { return "++"; }
     if (percentage <= 5.0) { return "+"; }
