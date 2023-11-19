@@ -8,6 +8,8 @@ import Set;
 import String;
 import Read;
 
+// Minimal size of code fragments taken into account
+// for duplication calculation.
 int GROUPSIZE = 6;
 
 public str countDuplicates(list[list[str]] projectLines, int totalLines) {
@@ -40,14 +42,6 @@ public str countDuplicates(list[list[str]] projectLines, int totalLines) {
    output:
    a map containing all distinct code groups with a size of 6 lines as the key
    and the number of duplicate lines found for that group.
-
-   This function goes through the files once. When scanning a file, it takes
-   the next 6 lines from the current index as a group. The group is added as a
-   key to the map if it has not been added before. If it is recognized as a
-   duplicated group, GROUPSIZE (6) will be added to the value of the group in
-   the map. After the current group has been recognized as a duplicate, the
-   inDuplicate state will be entered and the following lines will be checked
-   whether they are included in the
 */
 map[str, int] findDuplicates(list[list[str]] files) {
     // Key: group of 6 consecutive lines of code.

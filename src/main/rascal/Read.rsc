@@ -8,13 +8,14 @@ import List;
 import Set;
 import String;
 
-// Create a list of all file locations in the project
+// Create a list of all file locations in the project.
 public list[loc] getFiles(loc projectLocation) {
     M3 model = createM3FromMavenProject(projectLocation);
     list[loc] fileLocations = [f | f <- files(model.containment), isCompilationUnit(f)];
     return fileLocations;
 }
 
+// Create a list containing all files coverted to lists of strings.
 public list[list[str]] getProjectLines(loc projectLocation) {
     list[loc] fileLocations = getFiles(projectLocation);
     list[list[str]] files = [];
@@ -69,6 +70,7 @@ str deleteInlineComment(str s) {
     return s;
 }
 
+// Delete all comments from a file.
 list[str] deleteComments(list[str] file) {
     // Filter all single line comments without code before the comment and empty lines.
     // i.e. "// comment" gets filtered out, but "code // comment" is kept.
@@ -82,13 +84,15 @@ list[str] deleteComments(list[str] file) {
 
         bool hasCommentStart = contains(s, "/*");
         bool hasCommentEnd = contains(s, "*/");
+        // Do not include the line if it is in the middle of a multiline comment.
         if (inComment && !hasCommentEnd) { continue; }
 
         if (hasCommentEnd || hasCommentStart) {
             <inComment, s> = deleteMultiComments(inComment, s);
         }
 
-        if (/^\s*$/ !:= s) {newFile += trim(s);}
+        // Do not include line if it is empty.
+        if (/^\s*$/ !:= s) { newFile += trim(s); }
     }
     return newFile;
 }
