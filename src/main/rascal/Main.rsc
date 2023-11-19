@@ -30,21 +30,22 @@ int main(loc projectLocation) {
     list[list[str]] projectLines = getProjectLines(projectLocation);
 
     tuple[str rating, int lines] volume = countLinesProject(projectLines);
-    // println("Total number of lines: <volume.lines>");
-    // println("Volume rating: <volume.rating>");
+    println("Determning Volume:");
+    println("\tTotal number of lines: <volume.lines>");
+    println("\tVolume rating: <volume.rating>");
 
     str duplicates = countDuplicates(projectLines, volume.lines);
-    // println("Duplication rating: <duplicates>");
+    println("Determning Duplication:");
+    println("\tDuplication rating: <duplicates>");
 
-    tuple[str CC, str US] CCUS = mainComplexity(fileLocations, volume.lines);
-    // println("complexity: <CCUS.CC>");
-    // println("unitsize: <CCUS.US>");
+    tuple[str CC, str US] CCUS = mainComplexityUnitSize(fileLocations, volume.lines);
+    // The analytics are printed in the module to use the specific calculation results.
 
     str analysabilityScore = calculateMaintainabilityScore([volume.rating, duplicates, CCUS.US]);
     str changeabilityScore = calculateMaintainabilityScore([CCUS.CC, duplicates]);
     str testabilityScore = calculateMaintainabilityScore([CCUS.CC, CCUS.US]);
 
-    println("\t\t|\t vol \t|\t CCPU \t|\t dupes \t|\t US \t|");
+    println("\n\t\t|\t vol \t|\t CCPU \t|\t dupes \t|\t US \t|");
     println("-------------------------------------------------------------------------------------------------");
     println("analysability \t|\t <volume.rating> \t|\t\t|\t <duplicates> \t|\t <CCUS.US> \t|\t <analysabilityScore>");
     println("changeability \t|\t\t|\t <CCUS.CC> \t|\t <duplicates> \t|\t\t|\t <changeabilityScore>");
@@ -65,18 +66,18 @@ str calculateMaintainabilityScore(list[str] strScores) {
         }
     }
     // ++ score
-    if (result > 4) {
+    if (result == 4) {
         return "++";
     }
-    // ++ score
+    // + score
     if (result > 0) {
         return "+";
     }
-    // ++ score
+    // o score
     if (result == 0) {
         return "o";
     }
-    // ++ score
+    // - score
     if (result > -4) {
         return "-";
     }
