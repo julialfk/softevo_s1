@@ -18,16 +18,18 @@ public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     }
 
     real percentage = (duplicateLines / (totalLines * 1.0)) * 100;
-    // debug
-    // println("<duplicateLines> / <totalLines>");
-    // println("duplicate percentage: <percentage>");
 
-    if (percentage <= 3.0) { return "++"; }
-    if (percentage <= 5.0) { return "+"; }
-    if (percentage <= 10.0) { return "o"; }
-    if (percentage <= 20.0) { return "-"; }
+    str rating = "--";
+    if (percentage <= 20.0) { rating = "-"; }
+    if (percentage <= 10.0) { rating = "o"; }
+    if (percentage <= 5.0) { rating = "+"; }
+    if (percentage <= 3.0) { rating = "++"; }
 
-    return "--";
+    println("Determining Duplication:");
+    println("\tDuplication percentage: <duplicateLines> * 100 / <totalLines> = <percentage> %");
+    println("\tDuplication rating: <rating>");
+
+    return rating;
 }
 
 /* Create a mapping of blocks of code and the number of lines corresponding

@@ -30,13 +30,8 @@ int main(loc projectLocation) {
     list[list[str]] projectLines = getProjectLines(projectLocation);
 
     tuple[str rating, int lines] volume = countLinesProject(projectLines);
-    println("Determning Volume:");
-    println("\tTotal number of lines: <volume.lines>");
-    println("\tVolume rating: <volume.rating>");
 
     str duplicates = countDuplicates(projectLines, volume.lines);
-    println("Determning Duplication:");
-    println("\tDuplication rating: <duplicates>");
 
     tuple[str CC, str US] CCUS = mainComplexityUnitSize(fileLocations, volume.lines);
     // The analytics are printed in the module to use the specific calculation results.

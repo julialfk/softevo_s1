@@ -12,13 +12,18 @@ import Read;
 // Does count lines containing only brackets.
 public tuple[str, int] countLinesProject(list[list[str]] projectLines){
     int lines = size(concat(projectLines));
+    str rating = "--";
 
-    if (lines <= 66000) { return <"++", lines>; }
-    if (lines <= 246000) { return <"+", lines>; }
-    if (lines <= 665000) { return <"o", lines>; }
-    if (lines <= 1310000) { return <"-", lines>; }
+    if (lines <= 66000) { rating = "++"; }
+    if (lines <= 246000) { rating = "+"; }
+    if (lines <= 665000) { rating = "o"; }
+    if (lines <= 1310000) { rating = "-"; }
 
-    return <"--", lines>;
+    println("Determining Volume:");
+    println("\tTotal number of lines: <lines>");
+    println("\tVolume rating: <rating>");
+
+    return <rating, lines>;
 }
 
 // Count total number of lines in a file.
