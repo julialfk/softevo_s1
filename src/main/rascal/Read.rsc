@@ -49,7 +49,8 @@ tuple[bool, str] deleteMultiComments(bool inComment, str s) {
         // Catches: "code /* comment */ code"
         else {
             inComment = false;
-            newString = newString[0..indexStartComment] + newString[indexEndComment + 2..endLine];
+            newString = newString[0..indexStartComment]
+                        + newString[indexEndComment + 2..endLine];
         }
         indexStartComment = findFirst(newString, "/*");
     }
