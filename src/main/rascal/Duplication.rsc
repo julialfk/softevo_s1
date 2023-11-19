@@ -14,6 +14,7 @@ import Read;
 int GROUPSIZE = 6;
 real DECIMALS = 0.01;
 
+// Calculate and report on the rating for the Duplication measure.
 public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     map[str k, int v] codeGroups = findDuplicates(projectLines);
     int duplicateLines = 0;
@@ -84,6 +85,7 @@ map[str, int] findDuplicates(list[list[str]] files) {
     return codeGroups;
 }
 
+// Concatenate a list of strings into a single string.
 str concatGroup(list[str] group) {
     str s = "";
     for (n <- index(group)) {
