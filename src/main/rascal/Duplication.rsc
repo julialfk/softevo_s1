@@ -3,6 +3,7 @@ module Duplication
 import IO;
 import lang::java::m3::Core;
 import lang::java::m3::AST;
+import util::Math;
 import List;
 import Set;
 import String;
@@ -11,6 +12,7 @@ import Read;
 // Minimal size of code fragments taken into account
 // for duplication calculation.
 int GROUPSIZE = 6;
+real DECIMALS = 0.01;
 
 public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     map[str k, int v] codeGroups = findDuplicates(projectLines);
@@ -19,7 +21,7 @@ public str countDuplicates(list[list[str]] projectLines, int totalLines) {
         duplicateLines += codeGroups[group];
     }
 
-    real percentage = (duplicateLines / (totalLines * 1.0)) * 100;
+    real percentage = round((duplicateLines / (totalLines * 1.0)) * 100, DECIMALS);
 
     str rating = "--";
     if (percentage <= 20.0) { rating = "-"; }
@@ -28,7 +30,7 @@ public str countDuplicates(list[list[str]] projectLines, int totalLines) {
     if (percentage <= 3.0) { rating = "++"; }
 
     println("Determining Duplication:");
-    println("\tDuplication percentage: <duplicateLines> * 100 / <totalLines> = <percentage> %");
+    println("\tDuplication percentage: <duplicateLines> * 100 / <totalLines> = <percentage>%");
     println("\tDuplication rating: <rating>");
 
     return rating;
